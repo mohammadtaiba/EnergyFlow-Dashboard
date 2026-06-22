@@ -199,10 +199,10 @@ v
 Go Import Service
 |
 v
-PostgreSQL
+Spring Boot REST-API
 |
 v
-Spring Boot Backend
+PostgreSQL
 |
 v
 Vue Frontend
@@ -272,6 +272,7 @@ frontend
      |    |--- siteService.ts
      |    |--- meterService.ts
      |    |--- measurementService.ts
+     |    |--- thresholdService.ts
      |    |--- dashboardService.ts
      |
      |--- types
@@ -279,6 +280,7 @@ frontend
           |--- meter.ts
           |--- measurement.ts
           |--- dashboard.ts
+          |--- threshold.ts
           |--- alert.ts
 ```
 
@@ -305,6 +307,29 @@ ConsumptionBySiteChart.vue    // Diagramm für Verbrauch pro Standort
 AlertOverview.vue             // Anzeige aktueller Warnungen
 ```
 
+### Services
+
+```text
+api.ts                    // zentrale Axios-Konfiguration und Basis-URL
+siteService.ts            // API-Aufrufe für Standorte
+meterService.ts           // API-Aufrufe für Energiezähler
+measurementService.ts     // API-Aufrufe für Messwerte
+thresholdService.ts       // API-Aufrufe für Grenzwerte
+dashboardService.ts       // API-Aufrufe für Dashboard-Daten und Warnungen
+```
+
+### Types
+
+```text
+site.ts                   // TypeScript-Typen für Standorte
+meter.ts                  // TypeScript-Typen für Energiezähler
+measurement.ts            // TypeScript-Typen für Messwerte
+threshold.ts              // TypeScript-Typen für Grenzwerte
+dashboard.ts              // TypeScript-Typen für Dashboard-Kennzahlen und Diagrammdaten
+alert.ts                  // TypeScript-Typen für Warnungen und auffällige Messwerte
+```
+
+
 ---
 
 ## Backend-Struktur
@@ -321,6 +346,7 @@ backend
      |    |--- MeterController.java
      |    |--- MeasurementController.java
      |    |--- DashboardController.java
+     |    |--- ThresholdController.java
      |
      |--- service
      |    |--- SiteService.java
@@ -349,11 +375,14 @@ backend
      |    |--- DashboardSummaryDto.java
      |    |--- ConsumptionBySiteDto.java
      |    |--- ConsumptionOverTimeDto.java
+     |    |--- ThresholdDto.java
+     |    |--- ThresholdCreateDto.java
      |    |--- AlertDto.java
      |
      |--- enums
      |    |--- EnergyType.java
      |    |--- MeasurementStatus.java
+     |    |--- ThresholdPeriod.java
      |
      |--- exception
      |    |--- ResourceNotFoundException.java
