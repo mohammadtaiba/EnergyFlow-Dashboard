@@ -1,3 +1,17 @@
 spring:
   application:
     name: energyflow
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/energyflow
+    username: postgres
+    password: postgres
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+server:
+  port: 8080
