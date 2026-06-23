@@ -21,6 +21,7 @@ Das Projekt zeigt den Aufbau einer modernen Webanwendung mit Vue-Frontend, Sprin
 
 * [Projektziel](#projektziel)
 * [Aktueller Status](#aktueller-status)
+* [Screenshots](#Screenshots)
 * [Features](#features)
 * [Tech-Stack](#tech-stack)
 * [Architektur](#architektur)
@@ -73,6 +74,17 @@ DELETE  /api/sites/{id}
 * Dashboard-Endpunkte
 * Frontend-Anbindung an die REST-API
 * Backend-Tests
+
+---
+
+## Screenshots
+
+### Site Management
+
+<img src="docs/screenshots/site-management.png" alt="EnergyFlow Dashboard Site Management" width="900">
+
+Die Site-Management-Ansicht zeigt das Vue-Frontend mit angebundener Spring-Boot-REST-API. Standorte können erstellt, angezeigt, bearbeitet und gelöscht werden.
+
 
 ---
 
