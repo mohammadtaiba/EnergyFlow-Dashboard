@@ -31,7 +31,7 @@ Das Projekt zeigt den Aufbau einer modernen Webanwendung mit Vue-Frontend, Sprin
 * [Dokumentation](#dokumentation)
 * [Roadmap](#roadmap)
 * [Autor](#autor)
-* [Lizenz](#lizenz)
+* [License](#License)
 
 ---
 
@@ -365,8 +365,8 @@ Mohammad Taiba
 
 ---
 
-## Lizenz
+## License
 
-Dieses Projekt dient als eigenständiges Portfolio- und Lernprojekt.
+Copyright (c) 2026 Mohammad Taiba. All rights reserved.
 
-Der Quellcode ist öffentlich einsehbar. Eine Nutzung oder Weiterverwendung ist ohne vorherige Zustimmung nicht gestattet.
+This project is published for portfolio and review purposes only. See [LICENSE](./LICENSE).
