@@ -51,7 +51,7 @@ Das Projekt befindet sich in Entwicklung.
 
 * Vue-Frontend initialisiert
 * Spring-Boot-Backend initialisiert
-* PostgreSQL über Docker Compose eingerichtet
+* Frontend, Backend und PostgreSQL über Docker Compose startbar
 * Backend mit PostgreSQL verbunden
 * Erste REST-API für Standorte umgesetzt
 * Site CRUD API getestet
@@ -187,11 +187,11 @@ docs/architecture.md
 
 ### Voraussetzungen
 
-* Java 21
-* Node.js
-* npm
+* Git
 * Docker
 * Docker Compose
+
+Java 21, Node.js und npm werden nur für die manuelle Entwicklung ohne vollständigen Docker-Stack benötigt.
 
 ### 1. Repository klonen
 
@@ -200,52 +200,59 @@ git clone https://github.com/USERNAME/EnergyFlow-Dashboard.git
 cd EnergyFlow-Dashboard
 ```
 
-### 2. PostgreSQL starten
+### 2. Umgebungsvariablen vorbereiten
 
 ```powershell
-docker compose up -d
+Copy-Item .env.example .env
 ```
 
-Prüfen:
+Vor dem ersten Start muss in `.env` ein eigenes `POSTGRES_PASSWORD` gesetzt werden.
+
+> **Hinweis:** Die `POSTGRES_*`-Werte werden nur beim erstmaligen Anlegen des Datenbankvolumes übernommen. Bei einem bestehenden Volume muss ein geändertes Passwort in PostgreSQL migriert oder wieder an den vorhandenen Wert angepasst werden.
+
+### 3. Anwendung starten
 
 ```powershell
-docker ps
+docker compose up --build -d --wait --wait-timeout 120
 ```
 
-Erwarteter Container:
+Der Befehl baut und startet Frontend, Backend und PostgreSQL. Anschließend sind folgende Adressen verfügbar:
+
+| Dienst | Adresse |
+| --- | --- |
+| Anwendung | `http://localhost` |
+| API über das Frontend | `http://localhost/api/sites` |
+| Backend direkt | `http://localhost:8080` |
+
+Status prüfen:
+
+```powershell
+docker compose ps
+```
+
+Erwartete Container:
 
 ```text
 energyflow-postgres
+energyflow-backend
+energyflow-frontend
 ```
 
-### 3. Backend starten
+### 4. Anwendung stoppen
+
+Container stoppen, Daten behalten:
 
 ```powershell
-cd backend
-.\mvnw.cmd spring-boot:run
+docker compose down
 ```
 
-Backend läuft unter:
-
-```text
-http://localhost:8080
-```
-
-### 4. Frontend starten
-
-In einem zweiten Terminal:
+Container und Datenbankvolume löschen:
 
 ```powershell
-cd frontend
-npm install
-npm run dev
+docker compose down -v
 ```
 
-Frontend läuft unter:
-
-```text
-http://localhost:5173
-```
+> **Achtung:** `docker compose down -v` löscht alle lokal gespeicherten Datenbankdaten.
 
 Detaillierte Setup-Anleitung:
 
@@ -260,21 +267,21 @@ docs/setup.md
 ### Alle Standorte abrufen
 
 ```powershell
-Invoke-RestMethod -Uri "http://localhost:8080/api/sites"
+Invoke-RestMethod -Uri "http://localhost/api/sites"
 ```
 
 ### Standort anlegen
 
 ```powershell
 $body = @{
-    name = "Verwaltungsgebaeude Ilmenau"
+    name = "Verwaltungsgebäude Ilmenau"
     type = "OFFICE"
     location = "Ilmenau"
 } | ConvertTo-Json
 
 Invoke-RestMethod `
     -Method POST `
-    -Uri "http://localhost:8080/api/sites" `
+    -Uri "http://localhost/api/sites" `
     -ContentType "application/json" `
     -Body $body
 ```
@@ -282,7 +289,7 @@ Invoke-RestMethod `
 ### Standort nach ID abrufen
 
 ```powershell
-Invoke-RestMethod -Uri "http://localhost:8080/api/sites/1"
+Invoke-RestMethod -Uri "http://localhost/api/sites/1"
 ```
 
 Weitere API-Dokumentation:
@@ -298,16 +305,20 @@ docs/api.md
 ### Backend-Tests starten
 
 ```powershell
-cd backend
+Push-Location backend
 .\mvnw.cmd test
+Pop-Location
 ```
+
+Die Backend-Tests laufen gegen ein H2-Testprofil und benötigen keinen laufenden PostgreSQL-Container.
 
 ### Frontend prüfen
 
 ```powershell
-cd frontend
+Push-Location frontend
 npm run lint
 npm run build
+Pop-Location
 ```
 
 ---
@@ -347,7 +358,6 @@ docs/
 * Swagger/OpenAPI-Dokumentation
 * globale Fehlerbehandlung
 * Datenbankmigrationen mit Flyway oder Liquibase
-* vollständiges Docker Compose für Frontend, Backend und Datenbank
 
 ### Version 3: Erweiterungen
 

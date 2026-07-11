@@ -6,24 +6,19 @@ Dieses Dokument beschreibt die lokale Installation und den Start von **EnergyFlo
 
 ## Voraussetzungen
 
-Installiert sein müssen:
+Für den Standardstart werden benötigt:
 
 ```text
-Java 21
-Node.js
-npm
 Docker
 Docker Compose
 Git
-VS Code
 ```
+
+Node.js und npm werden zusätzlich für den Frontend-Entwicklungsmodus benötigt. Java 21 ist für lokale Backend-Tests erforderlich.
 
 Prüfen:
 
 ```powershell
-java -version
-node -v
-npm -v
 docker --version
 docker compose version
 git --version
@@ -54,176 +49,58 @@ EnergyFlow-Dashboard
 
 ---
 
-## PostgreSQL starten
+## Full-Stack starten
 
-Die Datenbank wird lokal über Docker Compose gestartet.
+Die Standardkonfiguration startet Frontend, Backend und PostgreSQL gemeinsam.
 
-```powershell
-docker compose up -d
-```
-
-Prüfen:
+### Umgebungsvariablen vorbereiten
 
 ```powershell
-docker ps
+Copy-Item .env.example .env
 ```
 
-Erwarteter Container:
+In `.env` muss vor dem ersten Start ein eigenes `POSTGRES_PASSWORD` gesetzt werden.
 
-```text
-energyflow-postgres
+> **Hinweis:** PostgreSQL übernimmt die `POSTGRES_*`-Werte nur beim erstmaligen Anlegen des Datenbankvolumes. Eine spätere Passwortänderung in `.env` ändert das Passwort in einer bestehenden Datenbank nicht. In diesem Fall muss das Passwort migriert oder `.env` wieder an den vorhandenen Wert angepasst werden.
+
+### Anwendung bauen und starten
+
+```powershell
+docker compose up --build -d --wait --wait-timeout 120
 ```
+
+Der Befehl wartet, bis alle drei Dienste bereit sind. Status und Logs können anschließend geprüft werden:
+
+```powershell
+docker compose ps
+docker compose logs -f
+```
+
+| Dienst | Erreichbarkeit |
+| --- | --- |
+| Frontend | `http://localhost` |
+| API über Nginx | `http://localhost/api/sites` |
+| Backend direkt | `http://localhost:8080` |
+| PostgreSQL | nur intern unter `postgres:5432` |
+
+PostgreSQL wird bewusst nicht am Host unter `localhost:5432` veröffentlicht.
 
 ---
 
-## Docker Compose
+## Optionaler Frontend-Entwicklungsmodus
 
-Datei:
-
-```text
-docker-compose.yml
-```
-
-Inhalt:
-
-```yaml
-services:
-  postgres:
-    image: postgres:16
-    container_name: energyflow-postgres
-    environment:
-      POSTGRES_DB: energyflow
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - "5432:5432"
-    volumes:
-      - energyflow_postgres_data:/var/lib/postgresql/data
-
-volumes:
-  energyflow_postgres_data:
-```
-
----
-
-## Backend konfigurieren
-
-Datei:
-
-```text
-backend/src/main/resources/application.yaml
-```
-
-Inhalt für lokale Entwicklung:
-
-```yaml
-spring:
-  application:
-    name: energyflow
-
-  datasource:
-    url: jdbc:postgresql://localhost:5432/energyflow
-    username: postgres
-    password: postgres
-
-  jpa:
-    open-in-view: false
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-
-server:
-  port: 8080
-```
-
----
-
-## Backend starten
-
-Im Projektordner:
+Für Hot Reload können PostgreSQL und Backend über Compose sowie das Frontend lokal gestartet werden:
 
 ```powershell
-cd backend
-.\mvnw.cmd spring-boot:run
-```
-
-Erfolgreicher Start:
-
-```text
-Tomcat started on port 8080
-Started EnergyflowApplication
-```
-
-Backend läuft unter:
-
-```text
-http://localhost:8080
-```
-
----
-
-## Backend stoppen
-
-```powershell
-Ctrl + C
-```
-
-Falls PowerShell fragt:
-
-```text
-Terminate batch job (Y/N)?
-```
-
-Dann:
-
-```powershell
-y
-```
-
----
-
-## Frontend installieren
-
-In einem zweiten Terminal:
-
-```powershell
+docker compose up --build -d --wait postgres backend
 cd frontend
 npm install
-```
-
----
-
-## Frontend starten
-
-```powershell
 npm run dev
 ```
 
-Frontend läuft unter:
+Das Entwicklungsfrontend läuft unter `http://localhost:5173` und leitet `/api` an das Backend weiter.
 
-```text
-http://localhost:5173
-```
-
----
-
-## Frontend stoppen
-
-```powershell
-Ctrl + C
-```
-
-Falls gefragt wird:
-
-```text
-Terminate batch job (Y/N)?
-```
-
-Dann:
-
-```powershell
-y
-```
+Mit `Ctrl + C` wird der Vite-Entwicklungsserver beendet. Die übrigen Dienste werden im Projektordner mit `docker compose down` gestoppt.
 
 ---
 
@@ -232,28 +109,27 @@ y
 Voraussetzungen:
 
 ```text
-PostgreSQL läuft
-Spring-Boot-Backend läuft
+Der Docker-Compose-Stack läuft
 ```
 
 ### Alle Standorte abrufen
 
 ```powershell
-Invoke-RestMethod -Uri "http://localhost:8080/api/sites"
+Invoke-RestMethod -Uri "http://localhost/api/sites"
 ```
 
 ### Standort anlegen
 
 ```powershell
 $body = @{
-    name = "Verwaltungsgebaeude Ilmenau"
+    name = "Verwaltungsgebäude Ilmenau"
     type = "OFFICE"
     location = "Ilmenau"
 } | ConvertTo-Json
 
 Invoke-RestMethod `
     -Method POST `
-    -Uri "http://localhost:8080/api/sites" `
+    -Uri "http://localhost/api/sites" `
     -ContentType "application/json" `
     -Body $body
 ```
@@ -261,7 +137,7 @@ Invoke-RestMethod `
 ### Standort nach ID abrufen
 
 ```powershell
-Invoke-RestMethod -Uri "http://localhost:8080/api/sites/1"
+Invoke-RestMethod -Uri "http://localhost/api/sites/1"
 ```
 
 ---
@@ -271,37 +147,44 @@ Invoke-RestMethod -Uri "http://localhost:8080/api/sites/1"
 ### Backend-Tests
 
 ```powershell
-cd backend
+Push-Location backend
 .\mvnw.cmd test
+Pop-Location
 ```
+
+Die Backend-Tests laufen gegen ein H2-Testprofil und benötigen keinen laufenden PostgreSQL-Container.
 
 ### Frontend Build
 
 ```powershell
-cd frontend
+Push-Location frontend
 npm run build
+Pop-Location
 ```
 
 ### Frontend Lint
 
 ```powershell
-cd frontend
+Push-Location frontend
 npm run lint
+Pop-Location
 ```
 
 ---
 
-## Datenbank stoppen
+## Full-Stack stoppen
 
-Container stoppen:
+Container stoppen und Daten behalten:
 
 ```powershell
 docker compose down
 ```
 
-Container und Daten löschen:
+Container und Datenbankvolume löschen:
 
 ```powershell
 docker compose down -v
 ```
+
+> **Achtung:** Dieser Befehl löscht alle lokal gespeicherten Datenbankdaten.
 
