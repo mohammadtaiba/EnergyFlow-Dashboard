@@ -1,4 +1,4 @@
-# EnergyFlow Dashboard
+﻿# EnergyFlow Dashboard
 
 
 ![CI/CD](https://github.com/mohammadtaiba/EnergyFlow-Dashboard/actions/workflows/ci-cd.yml/badge.svg)
@@ -13,7 +13,7 @@
 
 **EnergyFlow Dashboard** ist eine serviceorientierte Full-Stack-Webanwendung zur Erfassung, Verwaltung, Analyse und Visualisierung von Energieverbrauchsdaten.
 
-Das Projekt zeigt den Aufbau einer modernen Webanwendung mit Vue-Frontend, Spring-Boot-Backend, REST-API und PostgreSQL-Datenbank. Der fachliche Fokus liegt auf Energiemanagement, Standortverwaltung, Energiezählern, Messwerten, Grenzwerten und einfachen Dashboard-Auswertungen.
+Das Projekt zeigt den Aufbau einer modernen Webanwendung mit Vue-Frontend, Spring-Boot-Backend, REST-API und PostgreSQL-Datenbank. Der fachliche Fokus liegt auf Energiemanagement, Standortverwaltung, EnergiezÃ¤hlern, Messwerten, Grenzwerten und einfachen Dashboard-Auswertungen.
 
 ---
 
@@ -37,9 +37,9 @@ Das Projekt zeigt den Aufbau einer modernen Webanwendung mit Vue-Frontend, Sprin
 
 ## Projektziel
 
-Ziel des Projekts ist eine Webanwendung, mit der Energieverbrauchsdaten verschiedener Standorte und Energiezähler verwaltet, ausgewertet und visualisiert werden können.
+Ziel des Projekts ist eine Webanwendung, mit der Energieverbrauchsdaten verschiedener Standorte und EnergiezÃ¤hler verwaltet, ausgewertet und visualisiert werden kÃ¶nnen.
 
-Die Anwendung soll zeigen, wie Frontend, Backend und Datenbank in einer serviceorientierten Architektur zusammenspielen. Zusätzlich werden fachliche Logiken wie Grenzwertprüfung, Warnstatus und Dashboard-Kennzahlen umgesetzt.
+Die Anwendung soll zeigen, wie Frontend, Backend und Datenbank in einer serviceorientierten Architektur zusammenspielen. ZusÃ¤tzlich werden fachliche Logiken wie GrenzwertprÃ¼fung, Warnstatus und Dashboard-Kennzahlen umgesetzt.
 
 ---
 
@@ -51,12 +51,12 @@ Das Projekt befindet sich in Entwicklung.
 
 * Vue-Frontend initialisiert
 * Spring-Boot-Backend initialisiert
-* PostgreSQL über Docker Compose eingerichtet
+* Frontend, Backend und PostgreSQL Ã¼ber Docker Compose startbar
 * Backend mit PostgreSQL verbunden
-* Erste REST-API für Standorte umgesetzt
+* Erste REST-API fÃ¼r Standorte umgesetzt
 * Site CRUD API getestet
 
-### Aktuell verfügbare API
+### Aktuell verfÃ¼gbare API
 
 ```text
 GET     /api/sites
@@ -68,7 +68,7 @@ DELETE  /api/sites/{id}
 
 ### Geplant
 
-* Energiezähler-API
+* EnergiezÃ¤hler-API
 * Messwerte-API
 * Grenzwertlogik
 * Dashboard-Endpunkte
@@ -83,7 +83,7 @@ DELETE  /api/sites/{id}
 
 <img src="docs/screenshots/site-management.png" alt="EnergyFlow Dashboard Site Management" width="900">
 
-Die Site-Management-Ansicht zeigt das Vue-Frontend mit angebundener Spring-Boot-REST-API. Standorte können erstellt, angezeigt, bearbeitet und gelöscht werden.
+Die Site-Management-Ansicht zeigt das Vue-Frontend mit angebundener Spring-Boot-REST-API. Standorte kÃ¶nnen erstellt, angezeigt, bearbeitet und gelÃ¶scht werden.
 
 
 ---
@@ -96,11 +96,11 @@ Die Site-Management-Ansicht zeigt das Vue-Frontend mit angebundener Spring-Boot-
 * Standort nach ID abrufen
 * Standort anlegen
 * Standort bearbeiten
-* Standort löschen
+* Standort lÃ¶schen
 
 ### Geplante Funktionen
 
-* Energiezähler verwalten
+* EnergiezÃ¤hler verwalten
 * Messwerte erfassen und filtern
 * Grenzwerte definieren
 * Warnstatus automatisch setzen
@@ -187,11 +187,11 @@ docs/architecture.md
 
 ### Voraussetzungen
 
-* Java 21
-* Node.js
-* npm
+* Git
 * Docker
 * Docker Compose
+
+Java 21, Node.js und npm werden nur fÃ¼r die manuelle Entwicklung ohne vollstÃ¤ndigen Docker-Stack benÃ¶tigt.
 
 ### 1. Repository klonen
 
@@ -200,52 +200,59 @@ git clone https://github.com/USERNAME/EnergyFlow-Dashboard.git
 cd EnergyFlow-Dashboard
 ```
 
-### 2. PostgreSQL starten
+### 2. Umgebungsvariablen vorbereiten
 
 ```powershell
-docker compose up -d
+Copy-Item .env.example .env
 ```
 
-Prüfen:
+Vor dem ersten Start muss in `.env` ein eigenes `POSTGRES_PASSWORD` gesetzt werden.
+
+> **Hinweis:** Die `POSTGRES_*`-Werte werden nur beim erstmaligen Anlegen des Datenbankvolumes Ã¼bernommen. Bei einem bestehenden Volume muss ein geÃ¤ndertes Passwort in PostgreSQL migriert oder wieder an den vorhandenen Wert angepasst werden.
+
+### 3. Anwendung starten
 
 ```powershell
-docker ps
+docker compose up --build -d --wait --wait-timeout 120
 ```
 
-Erwarteter Container:
+Der Befehl baut und startet Frontend, Backend und PostgreSQL. AnschlieÃŸend sind folgende Adressen verfÃ¼gbar:
+
+| Dienst | Adresse |
+| --- | --- |
+| Anwendung | `http://localhost` |
+| API Ã¼ber das Frontend | `http://localhost/api/sites` |
+| Backend direkt | `http://localhost:8080` |
+
+Status prÃ¼fen:
+
+```powershell
+docker compose ps
+```
+
+Erwartete Container:
 
 ```text
 energyflow-postgres
+energyflow-backend
+energyflow-frontend
 ```
 
-### 3. Backend starten
+### 4. Anwendung stoppen
+
+Container stoppen, Daten behalten:
 
 ```powershell
-cd backend
-.\mvnw.cmd spring-boot:run
+docker compose down
 ```
 
-Backend läuft unter:
-
-```text
-http://localhost:8080
-```
-
-### 4. Frontend starten
-
-In einem zweiten Terminal:
+Container und Datenbankvolume lÃ¶schen:
 
 ```powershell
-cd frontend
-npm install
-npm run dev
+docker compose down -v
 ```
 
-Frontend läuft unter:
-
-```text
-http://localhost:5173
-```
+> **Achtung:** `docker compose down -v` lÃ¶scht alle lokal gespeicherten Datenbankdaten.
 
 Detaillierte Setup-Anleitung:
 
@@ -260,21 +267,21 @@ docs/setup.md
 ### Alle Standorte abrufen
 
 ```powershell
-Invoke-RestMethod -Uri "http://localhost:8080/api/sites"
+Invoke-RestMethod -Uri "http://localhost/api/sites"
 ```
 
 ### Standort anlegen
 
 ```powershell
 $body = @{
-    name = "Verwaltungsgebaeude Ilmenau"
+    name = "VerwaltungsgebÃ¤ude Ilmenau"
     type = "OFFICE"
     location = "Ilmenau"
 } | ConvertTo-Json
 
 Invoke-RestMethod `
     -Method POST `
-    -Uri "http://localhost:8080/api/sites" `
+    -Uri "http://localhost/api/sites" `
     -ContentType "application/json" `
     -Body $body
 ```
@@ -282,7 +289,7 @@ Invoke-RestMethod `
 ### Standort nach ID abrufen
 
 ```powershell
-Invoke-RestMethod -Uri "http://localhost:8080/api/sites/1"
+Invoke-RestMethod -Uri "http://localhost/api/sites/1"
 ```
 
 Weitere API-Dokumentation:
@@ -298,16 +305,20 @@ docs/api.md
 ### Backend-Tests starten
 
 ```powershell
-cd backend
+Push-Location backend
 .\mvnw.cmd test
+Pop-Location
 ```
 
-### Frontend prüfen
+Die Backend-Tests laufen gegen ein H2-Testprofil und benÃ¶tigen keinen laufenden PostgreSQL-Container.
+
+### Frontend prÃ¼fen
 
 ```powershell
-cd frontend
+Push-Location frontend
 npm run lint
 npm run build
+Pop-Location
 ```
 
 ---
@@ -338,7 +349,7 @@ docs/
 * PostgreSQL-Datenbankmodell
 * einfache Grenzwertlogik
 * Dashboard-Kennzahlen
-* Frontend-Ansichten für Standorte und Messwerte
+* Frontend-Ansichten fÃ¼r Standorte und Messwerte
 * Backend-Unit-Tests
 
 ### Version 2: Professionalisierung
@@ -347,15 +358,14 @@ docs/
 * Swagger/OpenAPI-Dokumentation
 * globale Fehlerbehandlung
 * Datenbankmigrationen mit Flyway oder Liquibase
-* vollständiges Docker Compose für Frontend, Backend und Datenbank
 
 ### Version 3: Erweiterungen
 
-* CSV-Upload für Messwerte
+* CSV-Upload fÃ¼r Messwerte
 * CSV-Export
-* PDF-Export für Dashboard-Berichte
+* PDF-Export fÃ¼r Dashboard-Berichte
 * Benachrichtigungen bei kritischen Messwerten
-* optionaler Go-Service für Import- oder Hintergrundverarbeitung
+* optionaler Go-Service fÃ¼r Import- oder Hintergrundverarbeitung
 
 ---
 
@@ -369,4 +379,5 @@ Mohammad Taiba
 
 Copyright (c) 2026 Mohammad Taiba. All rights reserved.
 
-This project is published for portfolio and review purposes only. See [LICENSE](./LICENSE).
+Der Quellcode ist öffentlich einsehbar. Die Nutzungsbedingungen stehen in [LICENSE](./LICENSE).
+

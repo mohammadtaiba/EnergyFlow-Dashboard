@@ -1,15 +1,63 @@
 services:
-  postgres:
-    image: postgres:16
-    container_name: energyflow-postgres
-    environment:
-      POSTGRES_DB: energyflow
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - "5432:5432"
-    volumes:
-      - energyflow_postgres_data:/var/lib/postgresql/data
+    postgres:
+        image: postgres:16
+        container_name: energyflow-postgres
+        restart: unless-stopped
+        environment:
+            POSTGRES_DB: ${POSTGRES_DB:-energyflow}
+            POSTGRES_USER: ${POSTGRES_USER:-postgres}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+        volumes:
+            - energyflow_postgres_data:/var/lib/postgresql/data
+        healthcheck:
+            test:
+                - CMD-SHELL
+                - pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-energyflow}
+            interval: 10s
+            timeout: 5s
+            retries: 5
+            start_period: 10s
+
+    backend:
+        build:
+            context: ./backend
+            dockerfile: Dockerfile
+        container_name: energyflow-backend
+        restart: unless-stopped
+        environment:
+            SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-energyflow}
+            SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-postgres}
+            SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+        depends_on:
+            postgres:
+                condition: service_healthy
+        ports:
+            - "8080:8080"
+        healthcheck:
+            test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/api/sites"]
+            interval: 5s
+            timeout: 3s
+            retries: 12
+            start_period: 30s
+
+    frontend:
+        build:
+            context: ./frontend
+            dockerfile: Dockerfile
+        container_name: energyflow-frontend
+        restart: unless-stopped
+        depends_on:
+            backend:
+                condition: service_healthy
+                restart: true
+        ports:
+            - "80:80"
+        healthcheck:
+            test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1/"]
+            interval: 5s
+            timeout: 3s
+            retries: 12
+            start_period: 10s
 
 volumes:
-  energyflow_postgres_data:
+    energyflow_postgres_data:
