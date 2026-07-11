@@ -1,4 +1,4 @@
-# EnergyFlow Dashboard
+﻿# EnergyFlow Dashboard
 
 
 ![CI/CD](https://github.com/mohammadtaiba/EnergyFlow-Dashboard/actions/workflows/ci-cd.yml/badge.svg)
@@ -13,7 +13,7 @@
 
 **EnergyFlow Dashboard** ist eine serviceorientierte Full-Stack-Webanwendung zur Erfassung, Verwaltung, Analyse und Visualisierung von Energieverbrauchsdaten.
 
-Das Projekt zeigt den Aufbau einer modernen Webanwendung mit Vue-Frontend, Spring-Boot-Backend, REST-API und PostgreSQL-Datenbank. Der fachliche Fokus liegt auf Energiemanagement, Standortverwaltung, Energiezählern, Messwerten, Grenzwerten und einfachen Dashboard-Auswertungen.
+Das Projekt zeigt den Aufbau einer modernen Webanwendung mit Vue-Frontend, Spring-Boot-Backend, REST-API und PostgreSQL-Datenbank. Der fachliche Fokus liegt auf Energiemanagement, Standortverwaltung, EnergiezÃ¤hlern, Messwerten, Grenzwerten und einfachen Dashboard-Auswertungen.
 
 ---
 
@@ -31,15 +31,15 @@ Das Projekt zeigt den Aufbau einer modernen Webanwendung mit Vue-Frontend, Sprin
 * [Dokumentation](#dokumentation)
 * [Roadmap](#roadmap)
 * [Autor](#autor)
-* [Lizenz](#lizenz)
+* [License](#License)
 
 ---
 
 ## Projektziel
 
-Ziel des Projekts ist eine Webanwendung, mit der Energieverbrauchsdaten verschiedener Standorte und Energiezähler verwaltet, ausgewertet und visualisiert werden können.
+Ziel des Projekts ist eine Webanwendung, mit der Energieverbrauchsdaten verschiedener Standorte und EnergiezÃ¤hler verwaltet, ausgewertet und visualisiert werden kÃ¶nnen.
 
-Die Anwendung soll zeigen, wie Frontend, Backend und Datenbank in einer serviceorientierten Architektur zusammenspielen. Zusätzlich werden fachliche Logiken wie Grenzwertprüfung, Warnstatus und Dashboard-Kennzahlen umgesetzt.
+Die Anwendung soll zeigen, wie Frontend, Backend und Datenbank in einer serviceorientierten Architektur zusammenspielen. ZusÃ¤tzlich werden fachliche Logiken wie GrenzwertprÃ¼fung, Warnstatus und Dashboard-Kennzahlen umgesetzt.
 
 ---
 
@@ -51,12 +51,12 @@ Das Projekt befindet sich in Entwicklung.
 
 * Vue-Frontend initialisiert
 * Spring-Boot-Backend initialisiert
-* Frontend, Backend und PostgreSQL über Docker Compose startbar
+* Frontend, Backend und PostgreSQL Ã¼ber Docker Compose startbar
 * Backend mit PostgreSQL verbunden
-* Erste REST-API für Standorte umgesetzt
+* Erste REST-API fÃ¼r Standorte umgesetzt
 * Site CRUD API getestet
 
-### Aktuell verfügbare API
+### Aktuell verfÃ¼gbare API
 
 ```text
 GET     /api/sites
@@ -68,7 +68,7 @@ DELETE  /api/sites/{id}
 
 ### Geplant
 
-* Energiezähler-API
+* EnergiezÃ¤hler-API
 * Messwerte-API
 * Grenzwertlogik
 * Dashboard-Endpunkte
@@ -83,7 +83,7 @@ DELETE  /api/sites/{id}
 
 <img src="docs/screenshots/site-management.png" alt="EnergyFlow Dashboard Site Management" width="900">
 
-Die Site-Management-Ansicht zeigt das Vue-Frontend mit angebundener Spring-Boot-REST-API. Standorte können erstellt, angezeigt, bearbeitet und gelöscht werden.
+Die Site-Management-Ansicht zeigt das Vue-Frontend mit angebundener Spring-Boot-REST-API. Standorte kÃ¶nnen erstellt, angezeigt, bearbeitet und gelÃ¶scht werden.
 
 
 ---
@@ -96,11 +96,11 @@ Die Site-Management-Ansicht zeigt das Vue-Frontend mit angebundener Spring-Boot-
 * Standort nach ID abrufen
 * Standort anlegen
 * Standort bearbeiten
-* Standort löschen
+* Standort lÃ¶schen
 
 ### Geplante Funktionen
 
-* Energiezähler verwalten
+* EnergiezÃ¤hler verwalten
 * Messwerte erfassen und filtern
 * Grenzwerte definieren
 * Warnstatus automatisch setzen
@@ -191,7 +191,7 @@ docs/architecture.md
 * Docker
 * Docker Compose
 
-Java 21, Node.js und npm werden nur für die manuelle Entwicklung ohne vollständigen Docker-Stack benötigt.
+Java 21, Node.js und npm werden nur fÃ¼r die manuelle Entwicklung ohne vollstÃ¤ndigen Docker-Stack benÃ¶tigt.
 
 ### 1. Repository klonen
 
@@ -208,7 +208,7 @@ Copy-Item .env.example .env
 
 Vor dem ersten Start muss in `.env` ein eigenes `POSTGRES_PASSWORD` gesetzt werden.
 
-> **Hinweis:** Die `POSTGRES_*`-Werte werden nur beim erstmaligen Anlegen des Datenbankvolumes übernommen. Bei einem bestehenden Volume muss ein geändertes Passwort in PostgreSQL migriert oder wieder an den vorhandenen Wert angepasst werden.
+> **Hinweis:** Die `POSTGRES_*`-Werte werden nur beim erstmaligen Anlegen des Datenbankvolumes Ã¼bernommen. Bei einem bestehenden Volume muss ein geÃ¤ndertes Passwort in PostgreSQL migriert oder wieder an den vorhandenen Wert angepasst werden.
 
 ### 3. Anwendung starten
 
@@ -216,15 +216,15 @@ Vor dem ersten Start muss in `.env` ein eigenes `POSTGRES_PASSWORD` gesetzt werd
 docker compose up --build -d --wait --wait-timeout 120
 ```
 
-Der Befehl baut und startet Frontend, Backend und PostgreSQL. Anschließend sind folgende Adressen verfügbar:
+Der Befehl baut und startet Frontend, Backend und PostgreSQL. AnschlieÃŸend sind folgende Adressen verfÃ¼gbar:
 
 | Dienst | Adresse |
 | --- | --- |
 | Anwendung | `http://localhost` |
-| API über das Frontend | `http://localhost/api/sites` |
+| API Ã¼ber das Frontend | `http://localhost/api/sites` |
 | Backend direkt | `http://localhost:8080` |
 
-Status prüfen:
+Status prÃ¼fen:
 
 ```powershell
 docker compose ps
@@ -246,13 +246,13 @@ Container stoppen, Daten behalten:
 docker compose down
 ```
 
-Container und Datenbankvolume löschen:
+Container und Datenbankvolume lÃ¶schen:
 
 ```powershell
 docker compose down -v
 ```
 
-> **Achtung:** `docker compose down -v` löscht alle lokal gespeicherten Datenbankdaten.
+> **Achtung:** `docker compose down -v` lÃ¶scht alle lokal gespeicherten Datenbankdaten.
 
 Detaillierte Setup-Anleitung:
 
@@ -274,7 +274,7 @@ Invoke-RestMethod -Uri "http://localhost/api/sites"
 
 ```powershell
 $body = @{
-    name = "Verwaltungsgebäude Ilmenau"
+    name = "VerwaltungsgebÃ¤ude Ilmenau"
     type = "OFFICE"
     location = "Ilmenau"
 } | ConvertTo-Json
@@ -310,9 +310,9 @@ Push-Location backend
 Pop-Location
 ```
 
-Die Backend-Tests laufen gegen ein H2-Testprofil und benötigen keinen laufenden PostgreSQL-Container.
+Die Backend-Tests laufen gegen ein H2-Testprofil und benÃ¶tigen keinen laufenden PostgreSQL-Container.
 
-### Frontend prüfen
+### Frontend prÃ¼fen
 
 ```powershell
 Push-Location frontend
@@ -349,7 +349,7 @@ docs/
 * PostgreSQL-Datenbankmodell
 * einfache Grenzwertlogik
 * Dashboard-Kennzahlen
-* Frontend-Ansichten für Standorte und Messwerte
+* Frontend-Ansichten fÃ¼r Standorte und Messwerte
 * Backend-Unit-Tests
 
 ### Version 2: Professionalisierung
@@ -361,11 +361,11 @@ docs/
 
 ### Version 3: Erweiterungen
 
-* CSV-Upload für Messwerte
+* CSV-Upload fÃ¼r Messwerte
 * CSV-Export
-* PDF-Export für Dashboard-Berichte
+* PDF-Export fÃ¼r Dashboard-Berichte
 * Benachrichtigungen bei kritischen Messwerten
-* optionaler Go-Service für Import- oder Hintergrundverarbeitung
+* optionaler Go-Service fÃ¼r Import- oder Hintergrundverarbeitung
 
 ---
 
@@ -375,8 +375,9 @@ Mohammad Taiba
 
 ---
 
-## Lizenz
+## License
 
-Dieses Projekt dient als eigenständiges Portfolio- und Lernprojekt.
+Copyright (c) 2026 Mohammad Taiba. All rights reserved.
 
-Der Quellcode ist öffentlich einsehbar. Eine Nutzung oder Weiterverwendung ist ohne vorherige Zustimmung nicht gestattet.
+Der Quellcode ist öffentlich einsehbar. Die Nutzungsbedingungen stehen in [LICENSE](./LICENSE).
+
