@@ -15,6 +15,7 @@ import { RouterLink, RouterView } from 'vue-router'
 
             <nav>
                 <RouterLink to="/sites">Sites</RouterLink>
+                <RouterLink to="/meters">Meters</RouterLink>
             </nav>
         </header>
 

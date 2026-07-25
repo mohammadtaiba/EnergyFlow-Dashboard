@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import MetersView from '@/views/MetersView.vue'
 import SitesView from '@/views/SitesView.vue'
 
 const router = createRouter({
@@ -12,6 +13,11 @@ const router = createRouter({
             path: '/sites',
             name: 'sites',
             component: SitesView,
+        },
+        {
+            path: '/meters',
+            name: 'meters',
+            component: MetersView,
         },
     ],
 })
