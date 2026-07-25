@@ -94,6 +94,11 @@ DELETE  /api/meters/{id}
 
 Die Site-Management-Ansicht zeigt das Vue-Frontend mit angebundener Spring-Boot-REST-API. Standorte kÃ¶nnen erstellt, angezeigt, bearbeitet und gelÃ¶scht werden.
 
+### Meter Management
+
+<img src="docs/screenshots/Meters.png" alt="EnergyFlow Dashboard Meter Management" width="900">
+
+Die Meter-Management-Ansicht zeigt die Verwaltung von Energiezählern mit Standort-Zuordnung, Energieart und technischer Zählernummer. Bestehende Zähler werden übersichtlich dargestellt und können direkt bearbeitet oder gelöscht werden.
 
 ---
 
