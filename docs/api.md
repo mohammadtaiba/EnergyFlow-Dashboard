@@ -22,12 +22,18 @@ GET     /api/sites/{id}
 POST    /api/sites
 PUT     /api/sites/{id}
 DELETE  /api/sites/{id}
+
+GET     /api/meters
+GET     /api/meters/{id}
+GET     /api/sites/{siteId}/meters
+POST    /api/meters
+PUT     /api/meters/{id}
+DELETE  /api/meters/{id}
 ```
 
 ### Geplant
 
 ```text
-/api/meters
 /api/measurements
 /api/thresholds
 /api/dashboard
@@ -238,13 +244,15 @@ Erwartetes Ergebnis:
 
 ---
 
-## Geplante API-Endpunkte
+## Weitere API-Endpunkte
 
-Diese Endpunkte sind Teil der geplanten MVP-Erweiterung.
+Die Meter API ist umgesetzt. Die folgenden weiteren Bereiche sind Teil der geplanten MVP-Erweiterung.
 
 ---
 
 ## Meters API
+
+Die Meters API verwaltet Energiezähler und ordnet sie bestehenden Standorten zu.
 
 ```text
 GET     /api/meters
@@ -264,6 +272,28 @@ Beispiel für `POST /api/meters`:
   "meterNumber": "STR-2026-001",
   "energyType": "ELECTRICITY"
 }
+```
+
+Beispiel-Antwort:
+
+```json
+{
+  "id": 1,
+  "siteId": 1,
+  "siteName": "Verwaltungsgebaeude Ilmenau",
+  "name": "Hauptstromzaehler",
+  "meterNumber": "STR-2026-001",
+  "energyType": "ELECTRICITY"
+}
+```
+
+Mögliche Werte für `energyType`:
+
+```text
+ELECTRICITY
+GAS
+WATER
+HEATING
 ```
 
 ---
