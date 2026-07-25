@@ -55,6 +55,9 @@ Das Projekt befindet sich in Entwicklung.
 * Backend mit PostgreSQL verbunden
 * Erste REST-API fÃ¼r Standorte umgesetzt
 * Site CRUD API getestet
+* REST-API für Energiezähler umgesetzt
+* Meter CRUD API getestet
+* Frontend-Ansicht für Energiezähler angebunden
 
 ### Aktuell verfÃ¼gbare API
 
@@ -64,16 +67,22 @@ GET     /api/sites/{id}
 POST    /api/sites
 PUT     /api/sites/{id}
 DELETE  /api/sites/{id}
+
+GET     /api/meters
+GET     /api/meters/{id}
+GET     /api/sites/{siteId}/meters
+POST    /api/meters
+PUT     /api/meters/{id}
+DELETE  /api/meters/{id}
 ```
 
 ### Geplant
 
-* EnergiezÃ¤hler-API
 * Messwerte-API
 * Grenzwertlogik
 * Dashboard-Endpunkte
-* Frontend-Anbindung an die REST-API
-* Backend-Tests
+* Frontend-Ansichten für Messwerte und Dashboard
+* weitere Backend-Tests für Messwerte und Dashboard-Logik
 
 ---
 
@@ -98,9 +107,17 @@ Die Site-Management-Ansicht zeigt das Vue-Frontend mit angebundener Spring-Boot-
 * Standort bearbeiten
 * Standort lÃ¶schen
 
+### Energiezählerverwaltung
+
+* Energiezähler anzeigen
+* Energiezähler nach ID abrufen
+* Energiezähler nach Standort filtern
+* Energiezähler anlegen
+* Energiezähler bearbeiten
+* Energiezähler löschen
+
 ### Geplante Funktionen
 
-* EnergiezÃ¤hler verwalten
 * Messwerte erfassen und filtern
 * Grenzwerte definieren
 * Warnstatus automatisch setzen
@@ -349,7 +366,7 @@ docs/
 * PostgreSQL-Datenbankmodell
 * einfache Grenzwertlogik
 * Dashboard-Kennzahlen
-* Frontend-Ansichten fÃ¼r Standorte und Messwerte
+* Frontend-Ansichten für Standorte, Energiezähler und Messwerte
 * Backend-Unit-Tests
 
 ### Version 2: Professionalisierung

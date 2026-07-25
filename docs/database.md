@@ -16,10 +16,11 @@ PostgreSQL 16
 
 Aktuell ist die PostgreSQL-Datenbank über Docker Compose eingerichtet.
 
-Die erste implementierte Tabelle ist:
+Die implementierten Tabellen sind:
 
 ```text
 sites
+meters
 ```
 
 Weitere Tabellen sind für die MVP-Erweiterung geplant.
@@ -263,7 +264,7 @@ CREATE TABLE meters (
     id BIGSERIAL PRIMARY KEY,
     site_id BIGINT NOT NULL,
     name VARCHAR(255) NOT NULL,
-    meter_number VARCHAR(255) NOT NULL,
+    meter_number VARCHAR(255) NOT NULL UNIQUE,
     energy_type VARCHAR(50) NOT NULL,
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP NOT NULL,
